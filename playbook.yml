@@ -1,0 +1,7 @@
+- hosts: localhost
+  become: true
+  roles:
+    - docker       # Installs Docker
+    - wordpress    # WordPress + MySQL
+    - nginx-proxy  # Reverse proxy (add this role)
+    - portainer    # Management UI (optional)

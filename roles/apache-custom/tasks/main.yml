@@ -1,0 +1,14 @@
+- name: Build Apache container
+  community.docker.docker_image:
+    name: apache-custom
+    source: build
+    build:
+      path: roles/apache-custom/files
+    state: present
+
+- name: Run Apache container
+  community.docker.docker_container:
+    name: apache-instance
+    image: apache-custom
+    ports:
+      - "8080:80"

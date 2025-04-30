@@ -1,0 +1,12 @@
+- name: Start Nginx-proxy container
+  community.docker.docker_container:
+    name: nginx-proxy
+    image: jwilder/nginx-proxy
+    restart_policy: always
+    ports:
+      - "80:80"    # HTTP
+      - "443:443"  # HTTPS (optional)
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro  # Auto-discovers containers
+    networks:
+      - name: wp-net  # Must match WordPress network

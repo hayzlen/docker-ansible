@@ -1,0 +1,35 @@
+- name: Create Docker network
+  community.docker.docker_network:
+    name: wp-net
+
+- name: Start MySQL containers
+  community.docker.docker_container:
+    name: "{{ item }}"
+    image: mysql:5.7
+    restart_policy: always
+    env:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - name: wp-net
+  loop:
+    - "roodkapje-db"
+    - "sneeuwwitje-db"
+    - "assepoester-db"
+
+- name: Start WordPress containers
+  community.docker.docker_container:
+    name: "{{ item.name }}"
+    image: wordpress:latest
+    restart_policy: always
+    env:
+      WORDPRESS_DB_HOST: "{{ item.db_host }}"
+      WORDPRESS_DB_USER: "root"
+      WORDPRESS_DB_PASSWORD: "root"
+      WORDPRESS_DB_NAME: "wordpress"
+      VIRTUAL_HOST: "{{ item.name }}.localhost"  # Critical for Nginx-proxy
+    networks:
+      - name: wp-net
+  loop:
+    - { name: "roodkapje", db_host: "roodkapje-db" }
+    - { name: "sneeuwwitje", db_host: "sneeuwwitje-db" }
+    - { name: "assepoester", db_host: "assepoester-db" }
