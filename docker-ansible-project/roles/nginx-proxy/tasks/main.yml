@@ -1,0 +1,10 @@
+- name: Start nginx-proxy
+  community.docker.docker_container:
+    name: nginx-proxy
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - name: wp-net
