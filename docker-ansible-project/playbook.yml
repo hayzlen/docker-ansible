@@ -1,9 +1,0 @@
-- name: Full Docker setup
-  hosts: localhost
-  become: true
-  roles:
-    - docker
-    - wordpress
-    - nginx-proxy
-    - portainer
-    - apache-custom
